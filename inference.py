@@ -4,16 +4,12 @@ import numpy as np
 model = pickle.load(open('model.pkl', 'rb'))
 class_names = ['setosa', 'versicolor', 'virginica']
 
-def predict(data):
-	sepal_length = float(data['Sepal Length'])
-	sepal_width = float(data['Sepal Width'])
-	petal_length = float(data['Petal Length'])
-	petal_width = float(data['Petal Width'])
+def predict(df):
+	df = df[["SepalLengthCm", "SepalWidthCm", "PetalLengthCm", "PetalWidthCm"]]
 
-	numpy_array = np.array([sepal_length, sepal_width, petal_length, petal_width]).reshape(1, 4)
+	numpy_array = df.to_numpy()
 	# Predict
-	class_prediced = int(model.predict(numpy_array)[0])
-
-	output = class_names[class_prediced]
+	predictions = model.predict(numpy_array)
+	#return str(predictions)
+	output = [class_names[class_predicted] for class_predicted in predictions]
 	return output
-
